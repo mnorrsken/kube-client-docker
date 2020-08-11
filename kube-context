@@ -1,0 +1,39 @@
+#!/bin/bash
+set -e
+if [ -z "$1" ]; then
+	ke=${KUBE_ENV:=xxx}
+else
+	ke=$1
+fi
+
+if [ "$ke" = "xxx" ]; then
+	exit 0
+fi
+
+if [ -z "$2" ]; then
+    kn=${KUBE_NS:=default}
+else
+	kn=$2
+fi
+
+server_var=${ke}_KUBE_SERVER
+user_var=${ke}_KUBE_USERNAME
+password_var=${ke}_KUBE_PASSWORD
+ca_var=${ke}_KUBE_CA
+
+if [ -z "${!ca_var}" ]; then
+	tlsopt="--insecure-skip-tls-verify=true"
+	embed="false"
+else
+	echo "${!ca_var}" > ca_file
+	tlsopt="--certificate-authority=./ca_file"
+	embed="true"
+fi
+
+kubectl config set-cluster ${ke} --embed-certs=false --server=${!server_var} $tlsopt --embed-certs=$embed
+
+kubectl config set-credentials ${ke} --username=${!user_var:=admin} --password=${!password_var} 
+
+kubectl config set-context ${ke} --cluster=${ke} --user=${ke} --namespace=${kn}
+
+kubectl config use-context ${ke}
