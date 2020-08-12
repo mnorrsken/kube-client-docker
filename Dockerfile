@@ -21,7 +21,7 @@ RUN useradd -ms /bin/bash kadm
 
 COPY ./kube-context /usr/bin/
 
-RUN chmod +x /entrypoint.sh /usr/bin/kube-context
+RUN chmod +x /usr/bin/kube-context
 
 USER kadm
 WORKDIR /home/kadm
