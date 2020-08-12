@@ -1,12 +1,12 @@
 #!/bin/bash
 set -e
 if [ -z "$1" ]; then
-	ke=${KUBE_ENV:=xxx}
+	ke=${KUBE_ENV^^}
 else
-	ke=$1
+	ke=${1^^}
 fi
 
-if [ "$ke" = "xxx" ]; then
+if [ -z "$ke" ]; then
 	exit 0
 fi
 

@@ -19,11 +19,10 @@ RUN set -ex; case $(uname -m) in aarch64*|armv8*) GOARCH=arm64 ;; arm*) GOARCH=a
 
 RUN useradd -ms /bin/bash kadm
 
-COPY ./kube-context /usr/bin/
+COPY ./setconf /usr/bin/
 
-RUN chmod +x /usr/bin/kube-context
+RUN chmod +x /usr/bin/setconf
 
 USER kadm
 WORKDIR /home/kadm
-COPY ./bashrc .bashrc
 CMD ["bash"]
