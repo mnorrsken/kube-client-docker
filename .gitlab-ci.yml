@@ -1,6 +1,6 @@
 variables:
   DOCKERHUB_IMAGE: "mrnr91/kube-client"
-  PLATFORMS: "linux/arm,linux/arm64,linux/amd64"
+  PLATFORMS: "linux/arm/v7,linux/arm64,linux/amd64"
   
 include:
   - project: 'shared/templates'
