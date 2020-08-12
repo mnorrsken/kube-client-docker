@@ -19,13 +19,11 @@ RUN set -ex; case $(uname -m) in aarch64*|armv8*) GOARCH=arm64 ;; arm*) GOARCH=a
 
 RUN useradd -ms /bin/bash kadm
 
-COPY ./entrypoint.sh /
 COPY ./kube-context /usr/bin/
 
 RUN chmod +x /entrypoint.sh /usr/bin/kube-context
 
 USER kadm
 WORKDIR /home/kadm
-
-CMD [ "bash" ]
-ENTRYPOINT [ "/entrypoint.sh" ]
+COPY ./bashrc .bashrc
+CMD ["bash"]
