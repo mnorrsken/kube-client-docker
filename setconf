@@ -16,6 +16,8 @@ else
 	kn=$2
 fi
 
+client_cert_file_var=${ke}_KUBE_CLIENT_CERT
+client_key_file_var=${ke}_KUBE_CLIENT_KEY
 server_var=${ke}_KUBE_SERVER
 user_var=${ke}_KUBE_USERNAME
 password_var=${ke}_KUBE_PASSWORD
@@ -32,7 +34,11 @@ fi
 
 kubectl config set-cluster ${ke} --embed-certs=false --server=${!server_var} $tlsopt --embed-certs=$embed
 
-kubectl config set-credentials ${ke} --username=${!user_var:=admin} --password=${!password_var} 
+if [ ! -z "${!client_cert_file_var}" ]; then
+	kubectl config set-credentials ${ke} --client-certificate=${!client_cert_file_var} --client-key=${!client_key_file_var}
+else
+	kubectl config set-credentials ${ke} --username=${!user_var:=admin} --password=${!password_var} 
+fi
 
 kubectl config set-context ${ke} --cluster=${ke} --user=${ke} --namespace=${kn}
 
