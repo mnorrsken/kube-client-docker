@@ -1,5 +1,5 @@
-FROM golang:1.14 as builder
-RUN GO111MODULE=on go get github.com/mikefarah/yq/v3
+FROM golang:1.15-buster as builder
+RUN GO111MODULE=on go get -v github.com/mikefarah/yq/v3
 
 
 FROM debian:buster
