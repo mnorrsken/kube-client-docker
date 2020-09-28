@@ -1,4 +1,4 @@
-FROM golang:1.15 as builder
+FROM golang:1.14 as builder
 RUN GO111MODULE=on go get github.com/mikefarah/yq/v3
 
 
