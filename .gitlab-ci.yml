@@ -4,4 +4,4 @@ variables:
   
 include:
   - project: 'shared/templates'
-    file: '.dockerhub.yml'
+    file: '.dockerhub-bullseye.yml'
