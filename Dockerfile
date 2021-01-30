@@ -17,7 +17,7 @@ RUN set -ex; case $(uname -m) in aarch64*|armv8*) GOARCH=arm64 ;; arm*) GOARCH=a
     mv ./kubectl /usr/bin/kubectl && \
     curl -kL https://get.helm.sh/helm-${HELM_VERSION}-linux-${GOARCH}.tar.gz | tar -zx --wildcards --strip-components=1 "*/helm" && \
     mv ./helm /usr/bin/helm && \
-    curl https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_${GOARCH} -o /usr/bin/yq && \
+    curl -kL https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_${GOARCH} -o /usr/bin/yq && \
     chmod +x /usr/bin/yq
 
 RUN useradd -ms /bin/bash kadm
