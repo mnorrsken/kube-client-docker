@@ -4,8 +4,8 @@ RUN GO111MODULE=on go get -v github.com/mikefarah/yq/v3
 
 FROM debian:buster
 
-ARG KUBERNETES_VERSION="v1.19.2"
-ARG HELM_VERSION="v3.3.4"
+ARG KUBERNETES_VERSION="v1.20.2"
+ARG HELM_VERSION="v3.5.1"
 
 RUN apt-get update && apt-get install -y \
         ca-certificates \
