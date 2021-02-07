@@ -4,12 +4,13 @@ ARG KUBERNETES_VERSION="v1.20.2"
 ARG HELM_VERSION="v3.5.1"
 ARG YQ_VERSION="v4.4.1"
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates \
         curl \
         git \
         gettext-base \
-        jq
+        jq \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN set -ex; case $(uname -m) in aarch64*|armv8*) GOARCH=arm64 ;; arm*) GOARCH=arm ;; x86_64) GOARCH=amd64 ;; *) exit 1 ;; esac && \
     curl -kLO "https://storage.googleapis.com/kubernetes-release/release/${KUBERNETES_VERSION}/bin/linux/${GOARCH}/kubectl" && \
