@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates \
         git
 
-RUN git clone https://github.com/Praqma/helmsman.git && cd helmsman && git checkout v${HELMSMAN_VERSION} && make build
+RUN git clone https://github.com/Praqma/helmsman.git && cd helmsman && git checkout ${HELMSMAN_VERSION} && make build
 
 FROM debian:buster
 ARG KUBERNETES_VERSION="1.20.8"
