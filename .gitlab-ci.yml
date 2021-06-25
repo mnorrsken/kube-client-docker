@@ -19,8 +19,10 @@ build:
       --progress plain --platform ${PLATFORMS} --push
       --cache-from $CACHE_REGISTRY_HOST/$CI_PROJECT_PATH --cache-to $CACHE_REGISTRY_HOST/$CI_PROJECT_PATH 
       -t "$IMAGE:$VERSION$PATCH" 
+      -t "$IMAGE:helmsman" 
       -t "$IMAGE:latest" 
       -t "$DOCKERHUB_IMAGE:$VERSION$PATCH" 
+      -t "$DOCKERHUB_IMAGE:helmsman" 
       -t "$DOCKERHUB_IMAGE:latest" 
       .
     - docker run -v $PWD:/workspace -e "DOCKERHUB_USERNAME=$DOCKER_USERNAME" -e "DOCKERHUB_PASSWORD=$DOCKER_PASSWORD" -e "DOCKERHUB_REPOSITORY=$DOCKERHUB_IMAGE" -e "README_FILEPATH=/workspace/README.md" peterevans/dockerhub-description:2.1.0
