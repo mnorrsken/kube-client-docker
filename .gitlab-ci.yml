@@ -1,7 +1,24 @@
 variables:
-  DOCKERHUB_IMAGE: "mrnr91/kube-client"
-  PLATFORMS: "linux/arm/v7,linux/arm64,linux/amd64"
-  
-include:
-  - project: 'shared/templates'
-    file: '.dockerhub-bullseye.yml'
+  VERSION: "1.20.8"
+  PATCH: "-1"
+  IMAGE: registry.gosr.se/kube-client
+  DOCKERHUB_IMAGE: mrnr91/kube-client
+  DOCKER_CLI_EXPERIMENTAL: enabled
+  PLATFORMS: "linux/amd64"
+build:
+  image: registry.gosr.se/norrsken/docker-builder:20
+  services:
+    - docker:20-dind
+  stage: build
+  script:
+    - echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USERNAME"  --password-stdin docker.io
+    - >
+      docker buildx build 
+      --progress plain --platform ${PLATFORMS} --push
+      --cache-from $CACHE_REGISTRY_HOST/$CI_PROJECT_PATH --cache-to $CACHE_REGISTRY_HOST/$CI_PROJECT_PATH 
+      -t "$IMAGE:$VERSION$PATCH" 
+      -t "$IMAGE:latest" 
+      -t "$DOCKERHUB_IMAGE:$VERSION$PATCH" 
+      -t "$DOCKERHUB_IMAGE:latest" 
+      .
+    - docker run -v $PWD:/workspace -e "DOCKERHUB_USERNAME=$DOCKER_USERNAME" -e "DOCKERHUB_PASSWORD=$DOCKER_PASSWORD" -e "DOCKERHUB_REPOSITORY=$DOCKERHUB_IMAGE" -e "README_FILEPATH=/workspace/README.md" peterevans/dockerhub-description:2.1.0
