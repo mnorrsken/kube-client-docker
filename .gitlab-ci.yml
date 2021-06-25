@@ -10,6 +10,8 @@ build:
   services:
     - docker:20-dind
   stage: build
+  tags:
+    - buildx
   script:
     - echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USERNAME"  --password-stdin docker.io
     - >
