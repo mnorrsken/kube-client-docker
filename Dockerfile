@@ -1,9 +1,5 @@
-ARG KUBERNETES_VERSION="1.20.8"
-ARG HELM_VERSION="3.6.1"
-ARG HELMSMAN_VERSION="3.7.1"
-ARG YQ_VERSION="4.9.6"
-
 FROM golang:1.16 as builder
+ARG HELMSMAN_VERSION="3.7.1"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates \
@@ -12,6 +8,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN git clone https://github.com/Praqma/helmsman.git && cd helmsman && git checkout ${HELMSMAN_VERSION} && make build
 
 FROM debian:buster
+ARG KUBERNETES_VERSION="1.20.8"
+ARG HELM_VERSION="3.6.1"
+ARG YQ_VERSION="4.9.6"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates \
