@@ -21,8 +21,10 @@ build:
       --progress plain --platform ${PLATFORMS} --push
       --cache-from $CACHE_REGISTRY_HOST/$CI_PROJECT_PATH --cache-to $CACHE_REGISTRY_HOST/$CI_PROJECT_PATH 
       -t "$IMAGE:$VERSION$PATCH" 
+      -t "$IMAGE:helmsman" 
       -t "$IMAGE:latest" 
       -t "$DOCKERHUB_IMAGE:$VERSION$PATCH" 
+      -t "$DOCKERHUB_IMAGE:helmsman" 
       -t "$DOCKERHUB_IMAGE:latest" 
       .
     - subi README.md
