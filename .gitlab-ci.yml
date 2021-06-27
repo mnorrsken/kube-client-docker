@@ -1,21 +1,23 @@
 variables:
-  VERSION: "1.20.8"
-  PATCH: "-1"
+  KUBERNETES_VERSION: "1.20.8"
+  VERSION: "${KUBERNETES_VERSION}"
+  HELM_VERSION: "3.6.1"
+  PATCH: "-2"
   IMAGE: registry.gosr.se/kube-client
   DOCKERHUB_IMAGE: mrnr91/kube-client
   DOCKER_CLI_EXPERIMENTAL: enabled
-  PLATFORMS: "linux/amd64"
+  PLATFORMS: "linux/amd64,linux/arm64"
 build:
   image: registry.gosr.se/norrsken/docker-builder:20
   services:
     - docker:20-dind
   stage: build
   tags:
-    - buildx
+    - buildpc
   script:
     - echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USERNAME"  --password-stdin docker.io
     - >
-      docker buildx build 
+      docker buildx build --build-arg KUBERNETES_VERSION --build-arg HELM_VERSION
       --progress plain --platform ${PLATFORMS} --push
       --cache-from $CACHE_REGISTRY_HOST/$CI_PROJECT_PATH --cache-to $CACHE_REGISTRY_HOST/$CI_PROJECT_PATH 
       -t "$IMAGE:$VERSION$PATCH" 
@@ -23,4 +25,5 @@ build:
       -t "$DOCKERHUB_IMAGE:$VERSION$PATCH" 
       -t "$DOCKERHUB_IMAGE:latest" 
       .
+    - subi README.md
     - docker run -v $PWD:/workspace -e "DOCKERHUB_USERNAME=$DOCKER_USERNAME" -e "DOCKERHUB_PASSWORD=$DOCKER_PASSWORD" -e "DOCKERHUB_REPOSITORY=$DOCKERHUB_IMAGE" -e "README_FILEPATH=/workspace/README.md" peterevans/dockerhub-description:2.1.0
