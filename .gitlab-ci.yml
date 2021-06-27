@@ -25,5 +25,6 @@ build:
       -t "$DOCKERHUB_IMAGE:$VERSION$PATCH" 
       -t "$DOCKERHUB_IMAGE:latest" 
       .
-    - ./subi README.md
-    - docker run -v $PWD:/workspace -e "DOCKERHUB_USERNAME=$DOCKER_USERNAME" -e "DOCKERHUB_PASSWORD=$DOCKER_PASSWORD" -e "DOCKERHUB_REPOSITORY=$DOCKERHUB_IMAGE" -e "README_FILEPATH=/workspace/README.md" peterevans/dockerhub-description:2.4.3
+    - echo "- kubectl v${KUBERNETES_VERSION}" >> README.md
+    - echo "- helm v${HELM_VERSION}" >> README.md
+    - docker run -v $PWD:/workspace -e "DOCKERHUB_USERNAME=$DOCKER_USERNAME" -e "DOCKERHUB_PASSWORD=$DOCKER_PASSWORD" -e "DOCKERHUB_REPOSITORY=$DOCKERHUB_IMAGE" -e "README_FILEPATH=/workspace/README.md" peterevans/dockerhub-description:2.4.2
